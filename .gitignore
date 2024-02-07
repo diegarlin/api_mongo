@@ -1,3 +1,5 @@
+#APLICACIÓN
+
 # Android Studio / IntelliJ
 .idea/
 .gradle/
@@ -26,3 +28,22 @@ app/src/generated/
 
 # Android Studio generated resource files
 app/src/main/res/generated/
+
+
+#API
+
+# Entorno virtual
+venv/
+
+# Archivos de base de datos locales
+local_database.db
+
+# Archivos de registro
+*.log
+
+# Archivos de configuración sensibles
+config.py
+
+# Archivos generados automáticamente
+__pycache__/
+*.pyc
