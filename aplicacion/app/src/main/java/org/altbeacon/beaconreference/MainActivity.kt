@@ -41,6 +41,12 @@ class MainActivity : Activity() {
         startActivity(intent)
     }
 
+    fun loginButtonTapped(view: View) {
+        val intent = Intent(this, LoginActivity::class.java)
+        Log.d("TOKEN", "HOLA")
+        startActivity(intent)
+    }
+
     companion object {
         val TAG = "MainActivity"
         val PERMISSION_REQUEST_BACKGROUND_LOCATION = 0
