@@ -21,6 +21,12 @@ class User(db.Model):
     password_hash = db.Column(db.String(120), nullable=False)
 
 # Para regsitrar a usuarios
+
+@app.route('/hola', methods=['GET'])
+def hola():
+    return jsonify({"msg": "hola"}), 400
+
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -67,4 +73,5 @@ if __name__ == '__main__':
     with app.app_context():
         # db.drop_all()
         db.create_all()
-    app.run(debug=True)
+        app.run(host='192.168.1.184', port=5000, debug=True)
+
