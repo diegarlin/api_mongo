@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightGray"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_height="60dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:text="PRINCIPAL"
-        android:textAlignment="center"
-        android:layout_width="match_parent"/>
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:text="Principal"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <View
         android:layout_width="match_parent"
@@ -32,17 +34,22 @@
         <Button
             android:id="@+id/mapButton"
             android:onClick="mapButtonTapped"
-            android:text="Mapa"
+            android:text="Map"
+            style="@style/CustomButtonStyle"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"/> <!-- Margen a la derecha -->
 
         <Button
             android:id="@+id/monitorizingButton"
-            android:text="Monitorizar"
+            android:onClick="monitorizeButtonTapped"
+            android:text="Monitorize"
+            style="@style/CustomButtonStyle"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"/> <!-- Margen a la izquierda -->
     </LinearLayout>
 
 </LinearLayout>
