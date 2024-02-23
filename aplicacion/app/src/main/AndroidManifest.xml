@@ -9,9 +9,10 @@
     <!-- Below is only needed if you want to read the device name or establish a bluetooth connection
     -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-
+    <!--  IMPORTNATE QUITAR android:usesCleartextTraffic="true" ya que podría acceder a HTTP, mi api debe tener certificados ya que sino fallará-->
     <application
         android:name="BeaconReferenceApplication"
+        
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

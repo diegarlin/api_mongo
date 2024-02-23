@@ -73,5 +73,12 @@ if __name__ == '__main__':
     with app.app_context():
         # db.drop_all()
         db.create_all()
+
         app.run(host='192.168.1.184', port=5000, debug=True)
+
+
+        
+        # ssl_cert = 'api\cert\cert.pem'
+        # ssl_key = 'api\cert\key.pem'
+        # app.run(host='192.168.1.184', port=5000, debug=True, ssl_context=(ssl_cert, ssl_key))
 
