@@ -49,7 +49,19 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:onClick="logoutButtonTapped"
+            android:text="Log out"
+            style="@style/CustomButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/monitorizingButton"
@@ -59,7 +71,8 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            />
     </LinearLayout>
 
 </LinearLayout>

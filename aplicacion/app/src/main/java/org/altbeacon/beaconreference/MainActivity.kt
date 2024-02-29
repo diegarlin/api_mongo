@@ -1,5 +1,6 @@
 package org.altbeacon.beaconreference
 
+import SharedPreferencesManager
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
@@ -18,9 +19,23 @@ import android.content.Intent
 import org.altbeacon.beacon.permissions.BeaconScanPermissionsActivity
 
 class MainActivity : Activity() {
+    private lateinit var loginButton: Button
+    private lateinit var logoutButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.principal)
+        loginButton = findViewById<Button>(R.id.loginButton)
+        logoutButton = findViewById<Button>(R.id.logoutButton)
+
+        val savedToken = SharedPreferencesManager.getTokenFromSharedPreferences(this@MainActivity)
+        if (!savedToken.isNullOrBlank()) {
+            loginButton.visibility = View.GONE
+            logoutButton.visibility = View.VISIBLE
+        } else {
+            loginButton.visibility = View.VISIBLE
+            logoutButton.visibility = View.GONE
+        }
+
     }
 
     override fun onPause() {
@@ -42,11 +57,15 @@ class MainActivity : Activity() {
     }
 
     fun loginButtonTapped(view: View) {
+
         val intent = Intent(this, LoginActivity::class.java)
-        Log.d("TOKEN", "HOLA")
         startActivity(intent)
     }
-
+    fun logoutButtonTapped(view: View) {
+        SharedPreferencesManager.clearTokenFromSharedPreferences(this@MainActivity)
+        loginButton.visibility = View.VISIBLE
+        logoutButton.visibility = View.GONE
+    }
     companion object {
         val TAG = "MainActivity"
         val PERMISSION_REQUEST_BACKGROUND_LOCATION = 0

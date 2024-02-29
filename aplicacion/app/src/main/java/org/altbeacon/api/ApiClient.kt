@@ -4,6 +4,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.widget.Toast
 import android.content.Context
+import com.google.gson.JsonObject
+import retrofit2.Response
+import android.util.Log
+
 //suspend lo que hace es bloquear el hilo donde se ejecuta para hacer una operación asíncrona sin parar los demás procesos para así
 //la aplicación sigua ejecutándose mientras llama a la API
 object ApiClient {
@@ -16,15 +20,10 @@ object ApiClient {
 
     val apiService: ApiService = retrofit.create(ApiService::class.java)
 
-    suspend fun login(context: Context, username: String, password: String): String? {
+    suspend fun login(context: Context, username: String, password: String): Response<JsonObject> {
         val response = apiService.login(LoginRequest(username, password))
-        return if (response.isSuccessful) {
-            response.body()?.access_token
-        } else {
-            Toast.makeText(context, "Inicio de sesión fallido. Por favor, verifica tus credenciales.", Toast.LENGTH_SHORT).show()
-            null
-        }
+        Log.d("api", "bien")
+        return response
     }
-
 }
 

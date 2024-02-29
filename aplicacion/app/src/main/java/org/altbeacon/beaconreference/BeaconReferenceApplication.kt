@@ -17,7 +17,7 @@ class BeaconReferenceApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        SharedPreferencesManager.init(this)
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         BeaconManager.setDebug(true)
 
