@@ -1,69 +1,72 @@
 package org.altbeacon.beaconreference
 
-import android.app.*
+import MyMonitorNotifier
+import SharedPreferencesManager
+import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
-import org.altbeacon.beacon.*
-import org.altbeacon.bluetooth.BluetoothMedic
+import org.altbeacon.beacon.Beacon
+import org.altbeacon.beacon.BeaconManager
+import org.altbeacon.beacon.BeaconParser
+import org.altbeacon.beacon.MonitorNotifier
+import org.altbeacon.beacon.Region
+
 
 class BeaconReferenceApplication: Application() {
     // the region definition is a wildcard that matches all beacons regardless of identifiers.
     // if you only want to detect beacons with a specific UUID, change the id1 paremeter to
     // a UUID like Identifier.parse("2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")
-    var region = Region("all-beacons", null, null, null)
+
+    //Podría tener en Mongo un montón de beacons y llamar a la api y crear todas las regiones, así si creo
+    // un método para añadir y borrar regiones desde fuera no tendría que tocar la aplicación
+    var region = Region("A0.12", null, null, null)
 
     override fun onCreate() {
         super.onCreate()
         SharedPreferencesManager.init(this)
+
         val beaconManager = BeaconManager.getInstanceForApplication(this)
         BeaconManager.setDebug(true)
 
+        beaconManager.getBeaconParsers().clear()
+        val parser = BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")
+        beaconManager.getBeaconParsers().add(parser)
+
+
+        val myMonitorNotifier = MyMonitorNotifier(this)
+        beaconManager.addMonitorNotifier(myMonitorNotifier)
+
+        BeaconManager.setBeaconSimulator(TimedBeaconSimulator())
+        (BeaconManager.getBeaconSimulator() as TimedBeaconSimulator?)!!.createTimedSimulatedBeacons()
+
+        setupBeaconScanning()
         // By default the AndroidBeaconLibrary will only find AltBeacons.  If you wish to make it
         // find a different type of beacon, you must specify the byte layout for that beacon's
         // advertisement with a line like below.  The example shows how to find a beacon with the
         // same byte layout as AltBeacon but with a beaconTypeCode of 0xaabb.  To find the proper
         // layout expression for other beacon types, do a web search for "setBeaconLayout"
         // including the quotes.
-        //
-        //beaconManager.getBeaconParsers().clear();
-        //beaconManager.getBeaconParsers().add(new BeaconParser().
-        //        setBeaconLayout("m:0-1=4c00,i:2-24v,p:24-24"));
 
 
-        // By default the AndroidBeaconLibrary will only find AltBeacons.  If you wish to make it
-        // find a different type of beacon like Eddystone or iBeacon, you must specify the byte layout
-        // for that beacon's advertisement with a line like below.
-        //
-        // If you don't care about AltBeacon, you can clear it from the defaults:
-        //beaconManager.getBeaconParsers().clear()
-
-        // Uncomment if you want to block the library from updating its distance model database
-        //BeaconManager.setDistanceModelUpdateUrl("")
-
-        // The example shows how to find iBeacon.
-        val parser = BeaconParser().
-        setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")
-        parser.setHardwareAssistManufacturerCodes(arrayOf(0x004c).toIntArray())
-        beaconManager.getBeaconParsers().add(
-            parser)
 
         // enabling debugging will send lots of verbose debug information from the library to Logcat
         // this is useful for troubleshooting problmes
-        // BeaconManager.setDebug(true)
+
+        BeaconManager.setBeaconSimulator(TimedBeaconSimulator())
+        (BeaconManager.getBeaconSimulator() as TimedBeaconSimulator).createTimedSimulatedBeacons()
 
 
-        // The BluetoothMedic code here, if included, will watch for problems with the bluetooth
-        // stack and optionally:
-        // - power cycle bluetooth to recover on bluetooth problems
-        // - periodically do a proactive scan or transmission to verify the bluetooth stack is OK
-        // BluetoothMedic.getInstance().legacyEnablePowerCycleOnFailures(this) // Android 4-12 only
-        // BluetoothMedic.getInstance().enablePeriodicTests(this, BluetoothMedic.SCAN_TEST + BluetoothMedic.TRANSMIT_TEST)
 
-        setupBeaconScanning()
     }
+
     fun setupBeaconScanning() {
         val beaconManager = BeaconManager.getInstanceForApplication(this)
 
@@ -101,14 +104,15 @@ class BeaconReferenceApplication: Application() {
         // observer will be called each time the monitored regionState changes (inside vs. outside region)
         regionViewModel.regionState.observeForever( centralMonitoringObserver)
         // observer will be called each time a new list of beacons is ranged (typically ~1 second in the foreground)
+
         regionViewModel.rangedBeacons.observeForever( centralRangingObserver)
 
     }
 
     fun setupForegroundService() {
-        val builder = Notification.Builder(this, "BeaconReferenceApp")
-        builder.setSmallIcon(R.drawable.ic_launcher_background)
-        builder.setContentTitle("Scanning for Beacons")
+        val builder = Notification.Builder(this, "ETSII_INDOOR")
+        builder.setSmallIcon(R.drawable.ic_launcher_foreground)
+        builder.setContentTitle("Escaneando beacons")
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_IMMUTABLE
@@ -151,9 +155,9 @@ class BeaconReferenceApplication: Application() {
 
     private fun sendNotification() {
         val builder = NotificationCompat.Builder(this, "beacon-ref-notification-id")
-            .setContentTitle("Beacon Reference Application")
-            .setContentText("A beacon is nearby.")
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setContentTitle("ETSII INDOOR")
+            .setContentText("Estás cerca de un beacon")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addNextIntent(Intent(this, MainActivity::class.java))
         val resultPendingIntent = stackBuilder.getPendingIntent(
