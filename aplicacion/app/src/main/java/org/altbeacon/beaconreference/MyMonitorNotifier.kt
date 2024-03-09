@@ -12,12 +12,13 @@ class MyMonitorNotifier(private val context: Context) : MonitorNotifier {
     override fun didEnterRegion(region: Region) {
         val fecha = Calendar.getInstance()
         Log.d("NOTIFIER", "ENTRADA $fecha")
-        sendNotification("Hola", "¡Bienvenido!")
+        sendNotification("Hola", "¡Bienvenido!" + region.uniqueId)
     }
 
     override fun didExitRegion(region: Region) {
         val fecha = Calendar.getInstance()
         Log.d("NOTIFIER", "SALIDA $fecha")
+        sendNotification("Adios", "¡Adios!" + region.uniqueId)
     }
 
     override fun didDetermineStateForRegion(state: Int, region: Region) {

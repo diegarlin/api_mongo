@@ -47,10 +47,7 @@ class MainActivity : Activity() {
         super.onResume()
     }
 
-    fun monitorizeButtonTapped(view: View){
-        val intent = Intent(this, MonitorizarActivity::class.java)
-        startActivity(intent)
-    }
+
     fun mapButtonTapped(view: View) {
         val intent = Intent(this, MapaActivity::class.java)
         startActivity(intent)

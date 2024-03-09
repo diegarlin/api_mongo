@@ -19,11 +19,11 @@ public class TimedBeaconSimulator implements org.altbeacon.beacon.simulator.Beac
 	private List<Beacon> beacons;
 	Beacon beacon1 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
 			.setId2("1").setId3("1").setRssi(-55).setTxPower(-55).build();
-	Beacon beacon2 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
+	Beacon beacon2 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997B")
 			.setId2("1").setId3("2").setRssi(-55).setTxPower(-55).build();
-	Beacon beacon3 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
+	Beacon beacon3 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997C")
 			.setId2("1").setId3("3").setRssi(-55).setTxPower(-55).build();
-	Beacon beacon4 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
+	Beacon beacon4 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997D")
 			.setId2("1").setId3("4").setRssi(-55).setTxPower(-55).build();
 
 
@@ -92,19 +92,11 @@ public class TimedBeaconSimulator implements org.altbeacon.beacon.simulator.Beac
 	public void createTimedSimulatedBeacons(){
 		if (USE_SIMULATED_BEACONS){
 			beacons = new ArrayList<Beacon>();
-            Beacon beacon1 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
-                    .setId2("1").setId3("1").setRssi(-55).setTxPower(-55).build();
-            Beacon beacon2 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
-                    .setId2("1").setId3("2").setRssi(-55).setTxPower(-55).build();
-            Beacon beacon3 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
-                    .setId2("1").setId3("3").setRssi(-55).setTxPower(-55).build();
-            Beacon beacon4 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
-                    .setId2("1").setId3("4").setRssi(-55).setTxPower(-55).build();
 			beacons.add(beacon1);
 			beacons.add(beacon2);
 			beacons.add(beacon3);
 			beacons.add(beacon4);
-			
+
 			final List<Beacon> finalBeacons = new ArrayList<Beacon>(beacons);
 
 			//Clearing beacons list to prevent all beacons from appearing immediately.
@@ -120,15 +112,15 @@ public class TimedBeaconSimulator implements org.altbeacon.beacon.simulator.Beac
 						//putting a single beacon back into the beacons list.
 						if (finalBeacons.size() > beacons.size())
 							beacons.add(finalBeacons.get(beacons.size()));
-						else 
-							scheduleTaskExecutor.shutdown();
-						
+						else
+							beacons.clear();
+
 					}catch(Exception e){
 						e.printStackTrace();
 					}
 				}
-			}, 0, 10, TimeUnit.SECONDS);
-		} 
+			}, 0, 5, TimeUnit.SECONDS);
+		}
 	}
 
 }
