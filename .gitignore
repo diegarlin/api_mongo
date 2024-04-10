@@ -47,3 +47,29 @@ config.py
 # Archivos generados automáticamente
 __pycache__/
 *.pyc
+
+# Archivos de configuración
+.env
+
+# Directorios generados por npm
+/api/mongo/node_modules
+
+# Archivos generados por herramientas de desarrollo
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos temporales
+*.tmp
+
+# Sublime Text files
+.svn
+
+# Archivos de configuración específicos de los sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Archivos de bloqueo de dependencias generados por npm o yarn
+package-lock.json
+yarn.lock

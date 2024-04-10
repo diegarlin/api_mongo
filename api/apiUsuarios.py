@@ -5,7 +5,6 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 
 app = Flask(__name__)
 
-# Configuración de la base de datos para desarrollo local con SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Esto afecta a la generación de toknes por lo tanto en produción tengo que cambiarlo
