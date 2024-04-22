@@ -15,17 +15,15 @@ router.get('/', async (req, res) => {
 
 // Crear un nuevo registro de entrada o salida
 router.post('/', async (req, res) => {
-    const { beaconId, tipo } = req.body;
+    const { beacon, tipo } = req.body;
     
-    if (!beaconId || !tipo) {
+    if (!beacon || !tipo) {
         return res.status(400).json({ message: "El identificador del beacon y el tipo son obligatorios." });
     }
 
     try {
-        const objectIdBeaconId = mongoose.Types.ObjectId(beaconId); // Convertir el beaconId a ObjectId
-
         const nuevoRegistro = new Registro({
-            beacon: objectIdBeaconId,
+            beacon: beacon,
             tipo: tipo
         });
 
