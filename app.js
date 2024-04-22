@@ -1,13 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const registrosRouter = require('./routes/registros.js');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT
 
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://diegarlin:EAjFZS1nU08KzoBJ@etsiindoor.istf4ds.mongodb.net/TFG')
+mongoose.connect(process.env.MONGODB_CONNECT_URI)
   .then(() => console.log('Conexión exitosa a MongoDB'))
   .catch(err => console.error('Error al conectar a MongoDB:', err));
 

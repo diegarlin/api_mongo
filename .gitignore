@@ -52,7 +52,7 @@ __pycache__/
 .env
 
 # Directorios generados por npm
-/api/mongo/node_modules
+node_modules
 
 # Archivos generados por herramientas de desarrollo
 *.log
