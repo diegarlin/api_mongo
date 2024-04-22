@@ -7,7 +7,7 @@ const PORT = 3000;
 
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/TFG')
+mongoose.connect('mongodb+srv://diegarlin:EAjFZS1nU08KzoBJ@etsiindoor.istf4ds.mongodb.net/TFG')
   .then(() => console.log('Conexión exitosa a MongoDB'))
   .catch(err => console.error('Error al conectar a MongoDB:', err));
 
