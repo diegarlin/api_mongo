@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
     try {
         const habitacion = beacon.slice(-4);
-        const fechaHora = new Date();
+        const fechaHora = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
 
         const nuevoRegistro = new Registro({
             beacon: beacon,
