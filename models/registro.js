@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const registroSchema = new mongoose.Schema({
     beacon: {
         type: String, // Cambiado a String
-        ref: 'Beacon' // Referencia al modelo de Beacon
+    },
+    habitacion: {
+        type: String, 
     },
     tipo: {
         type: String,
@@ -12,6 +14,9 @@ const registroSchema = new mongoose.Schema({
     fechaHora: {
         type: Date,
         default: Date.now // Fecha y hora de la interacción
+    },
+    deviceID: {
+        type: String
     }
 });
 

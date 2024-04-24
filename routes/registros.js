@@ -15,16 +15,22 @@ router.get('/', async (req, res) => {
 
 // Crear un nuevo registro de entrada o salida
 router.post('/', async (req, res) => {
-    const { beacon, tipo } = req.body;
+    const { beacon, tipo, deviceID } = req.body;
     
-    if (!beacon || !tipo) {
-        return res.status(400).json({ message: "El identificador del beacon y el tipo son obligatorios." });
+    if (!beacon || !tipo || !deviceID) {
+        return res.status(400).json({ message: "El identificador del beacon, el tipo y el deviceID son obligatorios." });
     }
 
     try {
+        const habitacion = beacon.slice(-4);
+        const fechaHora = new Date();
+
         const nuevoRegistro = new Registro({
             beacon: beacon,
-            tipo: tipo
+            tipo: tipo,
+            deviceID: deviceID,
+            habitacion: habitacion,
+            fechaHora: fechaHora
         });
 
         const registroGuardado = await nuevoRegistro.save();
