@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const registrosRouter = require('./routes/registros.js');
+const habitacionesRouter = require('./routes/habitaciones.js');
+
 
 const app = express();
 const PORT = process.env.PORT
@@ -14,6 +16,7 @@ mongoose.connect(process.env.MONGODB_CONNECT_URI)
 
 
 app.use('/registros', registrosRouter);
+app.use('/habitaciones', habitacionesRouter);
 
 app.get('/', (req, res) => {
     res.send('Bienvenido a la API de Mongo de ETSII INDOOR');

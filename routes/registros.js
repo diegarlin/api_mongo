@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Registro = require('../models/registro');
-const mongoose = require('mongoose');
-
 // Obtener todos los registros de entradas y salidas
 router.get('/', async (req, res) => {
     try {
