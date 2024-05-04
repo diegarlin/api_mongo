@@ -28,7 +28,8 @@ router.get('/entradas_por_habitacion', async (req, res) => {
             };
         }));
 
-        // Devuelve la lista de conteos
+        counts = counts.sort((a, b) => b.numPersonas - a.numPersonas);
+
         res.json(counts);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -80,6 +81,8 @@ router.get('/entradas_por_habitacion_fecha', async (req, res) => {
             numPersonas: habitaciones[habitacion]
         }));
 
+        listaHabitaciones = listaHabitaciones.sort((a, b) => b.numPersonas - a.numPersonas);
+
         res.json(listaHabitaciones);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -120,8 +123,10 @@ router.get('/personas_actual_habitaciones', async (req, res) => {
             };
         }));
 
-        // Devuelve la lista de conteos
+        counts = counts.sort((a, b) => b.numPersonas - a.numPersonas);
+
         res.json(counts);
+        
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -157,9 +162,10 @@ router.get('/personas_actual_fecha', async (req, res) => {
                 numPersonas: peopleInRoom.filter(Boolean).length
             };
         }));
+        counts = counts.sort((a, b) => b.numPersonas - a.numPersonas);
 
-        // Devuelve la lista de conteos
         res.json(counts);
+       
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
