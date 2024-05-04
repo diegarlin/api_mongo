@@ -24,7 +24,7 @@ router.get('/entradas_por_habitacion', async (req, res) => {
             // Devuelve un objeto con el nombre de la habitación y el número de 'entrada' registros
             return {
                 habitacion: room,
-                numEntradas: entradaCount
+                numPersonas: entradaCount
             };
         }));
 
