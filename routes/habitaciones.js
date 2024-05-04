@@ -38,7 +38,7 @@ router.get('/entradas_por_habitacion', async (req, res) => {
 // Obtener el número de personas que han pasado/entrado por cada habitación entre fecha inicio y fecha fin
 router.get('/entradas_por_habitacion_fecha', async (req, res) => {
     try {
-        const { habitacion, fechaInicio, fechaFin } = req.query;
+        const { letra, fechaInicio, fechaFin } = req.query;
 
         if (!fechaInicio || !fechaFin) {
             return res.status(400).json({ message: "Los parámetros fechaInicio y fechaFin son obligatorios" });
@@ -54,8 +54,8 @@ router.get('/entradas_por_habitacion_fecha', async (req, res) => {
             fechaHora: { $gte: fechaInicioDate, $lte: fechaFinDate }
         };
 
-        if (habitacion) {
-            filtro.habitacion = new RegExp('^' + habitacion, 'i'); // Filtrar por habitación, ignorando mayúsculas y minúsculas
+        if (letra) {
+            filtro.habitacion = new RegExp('^' + letra, 'i'); // Filtrar por habitación, ignorando mayúsculas y minúsculas
         }
 
         // Obtener todos los registros de entrada en el intervalo de tiempo especificado
@@ -131,11 +131,11 @@ router.get('/personas_actual_habitaciones', async (req, res) => {
 router.get('/personas_actual_fecha', async (req, res) => {
     try {
         // Obtiene la fecha y la habitación desde req.query
-        const { fecha, habitacion } = req.query;
+        const { fecha, letra } = req.query;
 
         // Crea una expresión regular para buscar habitaciones que comiencen con el parámetro proporcionado
         // Si no se proporciona ninguna habitacion, la expresión regular coincidirá con cualquier habitación
-        const roomRegex = habitacion ? new RegExp(`^${habitacion}`, 'i') : /.*/;
+        const roomRegex = letra ? new RegExp(`^${letra}`, 'i') : /.*/;
 
         // Convierte la fecha proporcionada a un objeto Date
         const fechaDate = moment.utc(fecha, "YYYY-MM-DD HH:mm").utcOffset("+02:00").toDate();
