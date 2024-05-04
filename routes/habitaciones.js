@@ -18,7 +18,7 @@ router.get('/entradas_por_habitacion', async (req, res) => {
         const rooms = await Registro.find({ habitacion: { $regex: roomRegex } }).distinct('habitacion');
 
         // Para cada habitación, cuenta el número de 'entrada' registros
-        const counts = await Promise.all(rooms.map(async (room) => {
+        let counts = await Promise.all(rooms.map(async (room) => {
             const entradaCount = await Registro.countDocuments({ habitacion: room, tipo: 'entrada' });
 
             // Devuelve un objeto con el nombre de la habitación y el número de 'entrada' registros
@@ -76,7 +76,7 @@ router.get('/entradas_por_habitacion_fecha', async (req, res) => {
         });
 
         // Convertir el objeto habitaciones en una lista de objetos
-        const listaHabitaciones = Object.keys(habitaciones).map(habitacion => ({
+        let listaHabitaciones = Object.keys(habitaciones).map(habitacion => ({
             habitacion: habitacion,
             numPersonas: habitaciones[habitacion]
         }));
@@ -102,7 +102,7 @@ router.get('/personas_actual_habitaciones', async (req, res) => {
         const rooms = await Registro.find({ habitacion: { $regex: roomRegex } }).distinct('habitacion');
 
         // Para cada habitación, cuenta el número de personas en la habitación
-        const counts = await Promise.all(rooms.map(async (room) => {
+        let counts = await Promise.all(rooms.map(async (room) => {
             const entradaRegistros = await Registro.find({ habitacion: room, tipo: 'entrada' }).lean();
             const peopleInRoom = await Promise.all(entradaRegistros.map(async (entrada) => {
                  // Para cada registro de 'entrada', busca un registro de 'salida' correspondiente
@@ -149,7 +149,7 @@ router.get('/personas_actual_fecha', async (req, res) => {
         const rooms = await Registro.find({ habitacion: { $regex: roomRegex } }).distinct('habitacion');
 
         // Para cada habitación, cuenta el número de personas en la habitación en la fecha proporcionada
-        const counts = await Promise.all(rooms.map(async (room) => {
+        let counts = await Promise.all(rooms.map(async (room) => {
             const entradaRegistros = await Registro.find({ habitacion: room, tipo: 'entrada', fechaHora: { $lte: fechaDate } }).lean();
             const peopleInRoom = await Promise.all(entradaRegistros.map(async (entrada) => {
                 const salidaRegistro = await Registro.findOne({ habitacion: room, tipo: 'salida', deviceID: entrada.deviceID, fechaHora: { $gt: entrada.fechaHora, $lte: fechaDate } }).lean();
