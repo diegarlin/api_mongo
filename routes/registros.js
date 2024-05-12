@@ -37,7 +37,8 @@ router.post('/', async (req, res) => {
         if(tipo === 'entrada'){
             const response = await axios.post('https://api-flask-t5ze.onrender.com/comprobar_sala', {
                 room: habitacion,
-                deviceID: deviceID
+                deviceID: deviceID,
+                fechaHora: fechaHora
             });
             console.log(response);
             console.log(habitacion);
