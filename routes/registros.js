@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Registro = require('../models/registro');
+const axios = require('axios');
 // Obtener todos los registros de entradas y salidas
 router.get('/', async (req, res) => {
     try {
@@ -33,6 +34,15 @@ router.post('/', async (req, res) => {
         });
 
         const registroGuardado = await nuevoRegistro.save();
+        if(tipo === 'entrada'){
+            const response = await axios.post('https://api-flask-t5ze.onrender.com/comprobar_sala', {
+                room: habitacion,
+                deviceID: deviceID
+            });
+            console.log(response);
+            console.log(habitacion);
+        }
+
         res.status(201).json(registroGuardado);
     } catch (err) {
         res.status(400).json({ message: err.message });
