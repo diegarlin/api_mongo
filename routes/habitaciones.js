@@ -171,6 +171,44 @@ router.get('/personas_actual_fecha', async (req, res) => {
     }
 });
 
+router.get('/registrar_salidas', async (req, res) => {
+    try {
+        // Obtener todos los registros de entrada
+        const entradaRecords = await Registro.find({ tipo: 'entrada' });
+
+        // Iterar sobre cada registro de entrada
+        for (let entradaRecord of entradaRecords) {
+            // Buscar un registro de salida correspondiente
+            const salidaRecord = await Registro.findOne({ 
+                beacon: entradaRecord.beacon,
+                habitacion: entradaRecord.habitacion,
+                deviceID: entradaRecord.deviceID,
+                tipo: 'salida',
+                fechaHora: { $gt: entradaRecord.fechaHora }
+            });
+            const fechaHora = new Date();
+            fechaHora.setHours(fechaHora.getHours() + 2);
+            // Si no se encuentra un registro de salida correspondiente, crear uno
+            if (!salidaRecord) {
+                const newSalidaRecord = new Registro({
+                    beacon: entradaRecord.beacon,
+                    habitacion: entradaRecord.habitacion,
+                    tipo: 'salida',
+                    deviceID: entradaRecord.deviceID,
+                    fechaHora: fechaHora
+                });
+
+                // Guardar el nuevo registro de salida en la base de datos
+                await newSalidaRecord.save();
+            }
+        }
+
+        res.status(200).send('Registros de salida faltantes creados con éxito.');
+    } catch (error) {
+        res.status(500).send('Hubo un error al crear los registros de salida faltantes: ' + error);
+    }
+});
+
 module.exports = router;
 
 
