@@ -171,7 +171,7 @@ router.get('/personas_actual_fecha', async (req, res) => {
     }
 });
 
-router.get('/registrar_salidas', async (req, res) => {
+router.get('/cerrar_entradas', async (req, res) => {
     try {
         // Obtener todos los registros de entrada
         const entradaRecords = await Registro.find({ tipo: 'entrada' });
