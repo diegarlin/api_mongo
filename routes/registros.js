@@ -35,13 +35,12 @@ router.post('/', async (req, res) => {
 
         const registroGuardado = await nuevoRegistro.save();
         if(tipo === 'entrada'){
-            const response = await axios.post('https://api-flask-t5ze.onrender.com/comprobar_sala', {
-                room: habitacion,
-                deviceID: deviceID,
-                fechaHora: fechaHora
+            const fechaHoraformateada = fechaHora.toISOString().slice(0, -5)
+            const response = await axios.post('https://api-flask-t5ze.onrender.com/comprobar_sala',
+            {   room: habitacion,
+                deviceID: deviceID, 
+                fechaHora: fechaHoraformateada
             });
-            console.log(response);
-            console.log(habitacion);
         }
 
         res.status(201).json(registroGuardado);
