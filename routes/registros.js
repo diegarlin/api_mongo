@@ -34,13 +34,16 @@ router.post('/', async (req, res) => {
         });
 
         const registroGuardado = await nuevoRegistro.save();
-        if(tipo === 'entrada'){
-            const fechaHoraformateada = fechaHora.toISOString().slice(0, -5)
-            const response = await axios.post('https://api-flask-t5ze.onrender.com/comprobar_sala',
-            {   room: habitacion,
-                deviceID: deviceID, 
-                fechaHora: fechaHoraformateada
-            });
+        if(tipo === 'entrada' && habitacion.startsWith('H')){
+            const ocupacion = await personas_actual_habitaciones({ params: { room: habitacion } });
+            if(ocupacion === 0){
+                const fechaHoraformateada = fechaHora.toISOString().slice(0, -5)
+                const responsePost = await axios.post('https://api-flask-t5ze.onrender.com/comprobar_sala',
+                {   room: habitacion,
+                    deviceID: deviceID, 
+                    fechaHora: fechaHoraformateada
+                });
+            }
         }
 
         res.status(201).json(registroGuardado);
