@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
 // Crear un nuevo registro de entrada o salida
 router.post('/', async (req, res) => {
     const { beacon, tipo, deviceID } = req.body;
-    
     if (!beacon || !tipo || !deviceID) {
         return res.status(400).json({ message: "El identificador del beacon, el tipo y el deviceID son obligatorios." });
     }
@@ -24,7 +23,6 @@ router.post('/', async (req, res) => {
         const habitacion = beacon.slice(-4).toUpperCase().replace(/(\w{2})(\w{2})/, '$1.$2');
         const fechaHora = new Date();
         fechaHora.setHours(fechaHora.getHours() + 2); // Ajustar a la hora de España (GMT+2)
-        
         const nuevoRegistro = new Registro({
             beacon: beacon,
             tipo: tipo,
@@ -32,9 +30,8 @@ router.post('/', async (req, res) => {
             habitacion: habitacion,
             fechaHora: fechaHora
         });
-
         const registroGuardado = await nuevoRegistro.save();
-        if(tipo === 'entrada' && habitacion.startsWith('H')){
+        if(tipo === 'entrada' && (habitacion.startsWith('F1.4') || habitacion.startsWith('F1.5')|| habitacion.startsWith('F1.6')|| habitacion.startsWith('F1.7'))){
             const ocupacion = await personas_actual_habitaciones({ params: { room: habitacion } });
             if(ocupacion === 0){
                 const fechaHoraformateada = fechaHora.toISOString().slice(0, -5)
